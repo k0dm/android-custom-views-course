@@ -41,23 +41,31 @@ class GestureDetectorView : CustomViewScaffold {
             return true
         }
 
-        override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+        override fun onScroll(
+            e1: MotionEvent?,
+            e2: MotionEvent,
+            distanceX: Float,
+            distanceY: Float
+        ): Boolean {
             Timber.i("onScroll()")
             circleXCenter -= distanceX
             circleYCenter -= distanceY
             invalidate()
-            return true
-        }
+            return true        }
 
         override fun onLongPress(e: MotionEvent) {
             Timber.i("onLongPress()")
         }
 
-        override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+        override fun onFling(
+            e1: MotionEvent?,
+            e2: MotionEvent,
+            velocityX: Float,
+            velocityY: Float
+        ): Boolean {
             val velocity = sqrt(velocityX.pow(2) +  velocityY.pow(2))
             Timber.i("onFling(); velocity: $velocity")
-            return true
-        }
+            return true        }
     }
 
     private val doubleTapListener = object : OnDoubleTapListener {

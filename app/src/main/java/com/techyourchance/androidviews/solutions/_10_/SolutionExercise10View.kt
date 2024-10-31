@@ -12,7 +12,6 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
-import android.view.View
 import androidx.core.content.ContextCompat
 import com.techyourchance.androidviews.CustomViewScaffold
 import com.techyourchance.androidviews.R
@@ -56,7 +55,7 @@ class SolutionExercise10View : CustomViewScaffold {
 
     private val onGestureListener = object : GestureDetector.SimpleOnGestureListener() {
 
-        override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+        override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
             return if (isConsumeNextGesture) {
                 drawableTranslationX -= distanceX
                 drawableTranslationY -= distanceY
