@@ -52,10 +52,10 @@ open class CustomViewScaffold: View {
         }
     }
 
-    protected fun dpToPx(dp: Float): Float {
+    protected fun dpToPx(dp: Number): Float {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            dp,
+            dp.toFloat(),
             context.resources.displayMetrics,
         )
     }
