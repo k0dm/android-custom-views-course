@@ -8,12 +8,25 @@
     >
 
     <com.techyourchance.androidviews.exercises._01_.MySliderView
+        android:id="@+id/mySliderView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/padding_screen_horizontal_standard"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="50dp" />
+
+    <TextView
+        android:id="@+id/sliderValueTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.0"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginHorizontal="@dimen/padding_screen_horizontal_standard"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mySliderView"
+        app:layout_constraintVertical_bias="0.2
+" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

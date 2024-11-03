@@ -13,6 +13,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.techyourchance.androidviews.CustomViewScaffold
 import com.techyourchance.androidviews.R
+import com.techyourchance.androidviews.exercises._03_.SliderChangeListener
 import kotlin.math.sqrt
 
 class MySliderView : CustomViewScaffold {
@@ -28,7 +29,9 @@ class MySliderView : CustomViewScaffold {
 
     private var isDragged = false
     private var lastActionEventX = 0f
-
+    var value = 0.5f
+        private set
+    private var onValueChangeListener: SliderChangeListener? = null
 
     private val paint = Paint()
 
@@ -43,6 +46,10 @@ class MySliderView : CustomViewScaffold {
     ) : super(
         context, attrs, defStyleAttr, defStyleRes
     )
+
+    fun setOnValueChangeListener(listener: SliderChangeListener) {
+        onValueChangeListener = listener
+    }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event == null) {
@@ -68,6 +75,11 @@ class MySliderView : CustomViewScaffold {
                 circleXCenter = lineXRight
                 lastActionEventX = lineXRight
                 invalidate()
+            }
+            val newValue = (circleXCenter - lineXLeft) / lineHeight
+            if (newValue != value) {
+                onValueChangeListener?.onValueChanged(value = newValue)
+                value = newValue
             }
         } else {
             isDragged = false
@@ -115,4 +127,5 @@ class MySliderView : CustomViewScaffold {
 
         canvas.drawCircle(circleXCenter, circleYCenter, circleRadius, paint)
     }
+
 }
