@@ -5,11 +5,14 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.Log
 import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.BaseSavedState
 import androidx.core.content.ContextCompat
 import com.techyourchance.androidviews.CustomViewScaffold
 import com.techyourchance.androidviews.R
@@ -104,7 +107,7 @@ class MySliderView : CustomViewScaffold {
         lineXLeft = paddingHorizontal + circleRadius
         lineXRight = w - paddingHorizontal - circleRadius
 
-        circleXCenter = w.toFloat() / 2
+        circleXCenter = w.toFloat() * value
         circleYCenter = lineYPos
     }
 
@@ -128,4 +131,53 @@ class MySliderView : CustomViewScaffold {
         canvas.drawCircle(circleXCenter, circleYCenter, circleRadius, paint)
     }
 
+    override fun onSaveInstanceState(): Parcelable? {
+        return super.onSaveInstanceState()?.let { superState ->
+            val updatedState = MySliderSavedState(superState)
+            updatedState.save(value)
+            updatedState
+        }
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        super.onRestoreInstanceState(state)
+        if (state is MySliderSavedState) {
+            value = state.restore()
+        }
+    }
+
+    private class MySliderSavedState: BaseSavedState {
+
+        private var value = 0f
+
+        constructor(superState: Parcelable) : super(superState)
+
+        constructor(parcel: Parcel) : super(parcel) {
+            value = parcel.readFloat()
+        }
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            out.writeFloat(value)
+        }
+
+        fun save(value: Float) {
+            this.value = value
+        }
+
+        fun restore() = value
+
+        override fun describeContents() = 0
+
+        companion object CREATOR : Parcelable.Creator<MySliderSavedState> {
+            override fun createFromParcel(parcel: Parcel): MySliderSavedState {
+                return MySliderSavedState(parcel)
+            }
+
+            override fun newArray(size: Int): Array<MySliderSavedState?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
 }
+
