@@ -10,6 +10,7 @@ import android.view.animation.LinearInterpolator
 import androidx.core.content.ContextCompat
 import com.techyourchance.androidviews.CustomViewScaffold
 import com.techyourchance.androidviews.R
+import kotlinx.coroutines.NonCancellable.start
 import kotlin.math.pow
 import kotlin.math.sqrt
 

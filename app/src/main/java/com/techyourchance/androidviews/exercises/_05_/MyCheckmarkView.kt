@@ -1,5 +1,6 @@
 package com.techyourchance.androidviews.exercises._05_
 
+import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
@@ -10,6 +11,7 @@ import android.graphics.Path
 import android.graphics.PathMeasure
 import android.graphics.RectF
 import android.util.AttributeSet
+import androidx.core.animation.doOnEnd
 import com.techyourchance.androidviews.CustomViewScaffold
 
 class MyCheckmarkView : CustomViewScaffold {
@@ -21,7 +23,11 @@ class MyCheckmarkView : CustomViewScaffold {
         style = Paint.Style.STROKE
         strokeWidth = dpToPx(LINE_SIZE_DP)
     }
-    private lateinit var valueAnimator: ValueAnimator
+
+    private lateinit var pathAnimator: ValueAnimator
+    private lateinit var scaleAnimator: ValueAnimator
+    private var scaleFactor = 1f
+    private lateinit var animatorSet: AnimatorSet
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -44,17 +50,28 @@ class MyCheckmarkView : CustomViewScaffold {
     )
 
     fun startAnimation(durationMs: Long) {
-        valueAnimator= ValueAnimator.ofFloat(0f, 1f).apply {
+        pathAnimator= ValueAnimator.ofFloat(0f, 1f).apply {
             duration = durationMs
             addUpdateListener {
                 updateCheckPath(it.animatedValue as Float)
             }
-            start()
         }
+
+
+        scaleAnimator = ValueAnimator.ofFloat(1f, 1.2f,1f).apply {
+            duration = 500
+            addUpdateListener {
+                scaleFactor = it.animatedValue as Float
+                invalidate()
+            }
+        }
+        animatorSet = AnimatorSet()
+        animatorSet.play(pathAnimator).before(scaleAnimator)
+        animatorSet.start()
     }
 
     fun stopAnimation() {
-        valueAnimator.cancel()
+        animatorSet.cancel()
     }
 
     private fun updateCheckPath(fraction: Float) {
@@ -74,6 +91,7 @@ class MyCheckmarkView : CustomViewScaffold {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        canvas.scale(scaleFactor, scaleFactor, width.toFloat()/2, height.toFloat()/2) // Scaling around the center
         canvas.drawPath(animatedCheckPath, checkPaint)
     }
 
